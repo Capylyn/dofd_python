@@ -1,27 +1,40 @@
-name: Continuous Integration
+name: My First Workflow
 
 on:
   push:
     branches:
       - main
+      
+  pull_request:
+    types: [opened, synchronize]
+
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Select the operating system
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4  # Clone the project
 
-      # Add additional steps as needed
-      # For example, installing software, downloading dependencies, building the project, running tests
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11 # Install Python
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt  # Download dependencies
 
-      - name: Build project
-        run: npm run build
+      - name: Adds default product data to the database.
+        run: |
+          python db.py -a  
 
-      - name: Run unit tests
-        run: npm test
+      - name: Prints all product data to the console.
+        run: |
+          python db.py -p 
+
+      - name: Run tests.
+        run: echo "Tests to be added"
